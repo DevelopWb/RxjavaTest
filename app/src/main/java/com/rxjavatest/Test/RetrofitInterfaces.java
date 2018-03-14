@@ -1,6 +1,4 @@
-package com.rxjavatest;
-
-import android.content.Entity;
+package com.rxjavatest.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,8 +9,8 @@ import java.util.TimeZone;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -36,28 +34,29 @@ public class RetrofitInterfaces {
         Call<Position> getPosition(@Path("path") String path, @QueryMap Map<String,String> options);
     }
 
-
+//通过post请求信标设备的位置，请求参数为键值对
     public interface  XinBiaoLocation{
         @FormUrlEncoded
         @POST("/WebService/GLService.asmx/GetMemberPositioningByImeis")
-        Call<Location> getPositionByPost(@Field("imeis") String options);
-    }
-    public interface  XinBiaoLocation2{
-        @FormUrlEncoded
-        @POST("{path}")
-        Call<Entity> getPositionByPost(@Path("path") String path , @FieldMap Map<String ,String> options);
+        Call<String> getPositionByPost(@Field("imeis") String options);
     }
 
+    //通过post请求信标设备的位置,请求参数为json字符串
+    public interface  XinBiaoLocation2{
+        @POST("/WebService/GLService.asmx/GetMemberPositioningByImeis")
+        Call<String> getPositionByPost(@Body Position position);
+    }
 
 
     /**
-     * 传一张图片,测试可以  图片上传的全路径eg:  http://gq.xun365.net/reuplf_exp.aspx?imei=2bgz12yp&createDate=20180129163455&lat=0.0&lng=0.0&type=0
+     * 传一张图片,测试可以  图片上传的全路径eg:
+     * http://gq.xun365.net/reuplf_exp.aspx?imei=20YJY2HA&createDate=20180129163455&lat=0.0&lng=0.0&type=0
      */
     public interface GaoQingTuChuanPost{
         @Multipart
         @POST("/reuplf_exp.aspx?")
         Call<ResponseBody> uploadImageFile(@QueryMap Map<String,String> map,
-                @Part("file\"; filename=\"image.jpg\"") RequestBody file);
+                                           @Part("pic\"; filename=\"image.png") RequestBody file);
     }
     /**
      * 传多张图片

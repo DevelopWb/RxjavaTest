@@ -1,16 +1,19 @@
-package com.rxjavatest;
+package com.rxjavatest.Test;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.rxjavatest.R;
+import com.rxjavatest.test1.Main1Activity;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 //        uploadImagePost();
 
 //        uploadImagePostMore();
+        startActivity(new Intent(this, Main1Activity.class));
     }
 
 
@@ -54,23 +58,20 @@ public class MainActivity extends AppCompatActivity {
      */
     private void getPositionThoughPost(String num) {
         String url = "http://xb.xun365.net";
-//        Map<String, String> map = new HashMap<>();
-//        map.put("imeis ", num);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RetrofitInterfaces.XinBiaoLocation xinBiaoLocation = retrofit.create(RetrofitInterfaces.XinBiaoLocation.class);
-        Call<Location> call = xinBiaoLocation.getPositionByPost(num);
-        call.enqueue(new Callback<Location>() {
+        Call<String> call = xinBiaoLocation.getPositionByPost(num);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Location> call, Response<Location> response) {
-                List<Location.ModelBean> arrays = response.body().getModel();
-                Toast.makeText(getApplicationContext(), arrays.get(0).getAddress(), Toast.LENGTH_LONG).show();
+            public void onResponse(Call<String> call, Response<String> response) {
+                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onFailure(Call<Location> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
             }
         });
@@ -160,10 +161,10 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Map<String, String> map = new HashMap<>();
-        map.put("imei", "888888");
+        map.put("imei", "20YJY2HA");
         map.put("createDate", "20180129163455");
-        map.put("lat", "0.0");
-        map.put("lng", "0.0");
+        map.put("lat", "88.0");
+        map.put("lng", "118.0");
         map.put("type", "0");
         RetrofitInterfaces.GaoQingTuChuanPost responseBody = retrofit.create(RetrofitInterfaces.GaoQingTuChuanPost.class);
         Call<ResponseBody> responseBodyCall = responseBody.uploadImageFile(map, getRequestBody());
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestBody getRequestBody() {
         File[] files = new File(srcFilePath).listFiles();
         RequestBody requestBody =
-                RequestBody.create(MediaType.parse("multipart/form-data"), files[0]);
+                RequestBody.create(MediaType.parse("multipart/form-data"), files[1]);
         return requestBody;
     }
 

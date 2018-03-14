@@ -1,4 +1,4 @@
-package com.rxjavatest;
+package com.rxjavatest.Test;
 
 /**
  * Author:wang_sir
